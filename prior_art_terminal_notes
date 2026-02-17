@@ -1,0 +1,988 @@
+===============================================================================
+                          PRIOR ART DISCLOSURE
+                      Terminal Notes Integrated System
+                           COMPLETE DISCLOSURE
+===============================================================================
+
+------------------------------------------------------------------------------
+                          DEFENSIVE PUBLICATION
+------------------------------------------------------------------------------
+
+===============================================================================
+                                SUMMARY
+===============================================================================
+
+Date of publication: February 2026
+Repository: https://github.com/worried-pixel/terminal-notes
+Status: Public, irrevocable, timestamped
+
+This document establishes prior art for the complete integrated system described herein.
+All concepts, implementations, combinations, and future adaptations disclosed are now part of the public domain.
+
+No party may patent these concepts. No party may claim exclusive rights.
+This is not a request. This is a statement of fact.
+
+===============================================================================
+                            DISCLOSED CONCEPTS
+===============================================================================
+
+------------------------------------------------------------------------------
+                                FOUNDATION
+------------------------------------------------------------------------------
+
+1. UUID PERMANENCE
+------------------------------------------------------------------------------
+Every item (note, notebook, file) receives a UUID at creation.
+UUID is never changed. It survives:
+- Rename operations
+- Move operations between notebooks
+- Deletion and resurrection
+- Export and re-import
+- Git commit history
+- Platform migration
+- Hard erase operations
+- Registry changes
+
+2. NOTEBOOK REGISTRY & PORTABILITY
+------------------------------------------------------------------------------
+Central registry maps notebook UUID → filesystem path.
+Notebooks can live in any location: default, custom, external drives, network shares.
+Custom paths persist in structure.json.
+Cross-platform path normalization enables discovery and duplicate prevention.
+Missing paths are detected and cleaned automatically.
+Registry survives system crashes, reinstallation, and migration.
+
+3. THREE-FILE ATOMIC ARCHITECTURE
+------------------------------------------------------------------------------
+Each notebook is a self-contained directory with three files:
+
+structure.json
+    Hierarchy, UUIDs, parent-child relationships, custom_path.
+    No content. Purely structural.
+
+notes.json
+    UUID → content mapping for regular notes.
+    Plain text. Human-readable. Git-diffable.
+
+files.json
+    UUID → content mapping for file notes.
+    Preserves syntax highlighting context via extension mapping.
+    Allowed extensions list maintains file-type integrity.
+
+Write operations are atomic: write .tmp → fsync → rename.
+Crash recovery is inherent; temporary files are ignored on restart.
+All three files are always committed together to maintain consistency.
+
+------------------------------------------------------------------------------
+                              TEMPORAL LAYER
+------------------------------------------------------------------------------
+
+4. GIT AS ITEM-LEVEL TEMPORAL DATABASE
+------------------------------------------------------------------------------
+Every state change is committed to Git.
+Each commit message contains the UUID of the affected item.
+Structured commit messages encode:
+
+    {ACTION} {TYPE}: {TITLE} | {CONTEXT} | Metadata: uuid:{UUID} {TAGS}
+
+Actions: CREATED, UPDATED, RENAMED, DELETED
+Types: NOTE, FILE, NOTEBOOK, SUBNOTEBOOK
+Context: notebook path, parent information
+Metadata: editor, line count, word count, file extension, tags
+
+Complete item history is queryable via:
+
+    git log --grep uuid:<UUID> --all
+    git log --grep "DELETED.*<query>" --all
+    git log --grep "RENAMED.*<query>" --all
+
+Git operations are silent; user never interacts with Git directly.
+Git is infrastructure, not interface.
+
+5. EIGHT STRUCTURED COMMIT OPERATIONS
+------------------------------------------------------------------------------
+The system generates eight distinct commit types, each with specific metadata:
+
+CREATED NOTEBOOK
+    - Notebook UUID, name, note count, file count, custom location flag
+    - Initial structure commit
+
+CREATED SUBNOTEBOOK
+    - Subnotebook UUID, name, parent notebook
+    - Nested hierarchy preservation
+
+CREATED NOTE
+    - Note UUID, title, notebook name, editor type (internal/vim)
+    - Word count, line count, note type detection
+
+CREATED FILE
+    - File UUID, filename, extension, notebook name
+    - Purpose detection from extension, line count
+
+UPDATED NOTE
+    - Note UUID, title, notebook name
+    - Line changes (old → new, delta), word changes (old → new, delta)
+    - Edit metrics for search and timeline
+
+RENAMED NOTE/FILE
+    - Item UUID, old name, new name, notebook name
+    - Both names searchable forever
+
+DELETED NOTE/FILE
+    - Item UUID, title, notebook name, type
+    - Item remains in history, removed from current view
+
+DELETED SUBNOTEBOOK
+    - Subnotebook UUID, name, parent notebook
+    - Complete hierarchy preserved in history
+
+All eight operations embed UUID in commit message.
+All eight are searchable via git grep.
+All eight contribute to temporal completeness.
+
+6. GIT FILTER-REPO INTEGRATION FOR COMPLETE ERASURE
+------------------------------------------------------------------------------
+System includes full git-filter-repo integration for hard deletion:
+
+import git_filter_repo
+
+def _purge_with_filter_repo(self, repo_path, uuid):
+    args = [
+        "--force",
+        "--path", "structure.json",
+        "--invert-paths",
+        "--grep", uuid
+    ]
+    git_filter_repo.main(args)
+    subprocess.run(["git", "gc", "--aggressive", "--prune=now"])
+
+This enables:
+    - Complete removal of all traces of an item from Git history
+    - Compliance with "right to be forgotten" (GDPR Article 17)
+    - Permanent erasure when user requires it
+    - Audit trail of erasure operation itself
+
+Filter-repo is imported as module, not subprocess, enabling:
+    - Progress reporting during long operations
+    - Integration with UI feedback
+    - Graceful fallback when filter-repo unavailable
+
+7. COMPLETE GDPR COMPLIANCE THROUGH DUAL DELETE ARCHITECTURE
+------------------------------------------------------------------------------
+System implements two deletion modes with different compliance properties:
+
+SOFT DELETE (FORGET)
+    - Item removed from current view
+    - Git commit with "DELETED" + UUID preserves history
+    - Item remains searchable, viewable, resurrectable
+    - Complies with: data minimization, storage limitation
+    - User retains access to all historical versions
+
+HARD DELETE (ERASE)
+    - git-filter-repo purges all commits containing UUID
+    - Item removed from all historical versions
+    - Git garbage collection makes erasure permanent
+    - No trace remains in repository
+    - Complies with: right to be forgotten (Article 17)
+    - Irreversible by design, confirmed by user confirmation
+
+ERASER MODULE
+    - Unified interface for both deletion types
+    - UUID-based item identification across all types
+    - Progress feedback during long operations
+    - Confirmation required for irreversible operations
+    - Audit logging of erasure events
+
+The system is compliant by architecture, not by policy:
+    - No data collection means no consent required
+    - No third-party code means no data sharing
+    - No cloud means no cross-border transfer
+    - Local storage means user control absolute
+    - Dual delete means right to erasure implemented
+    - JSON format means data portability inherent
+
+------------------------------------------------------------------------------
+                              NAVIGATION LAYER
+------------------------------------------------------------------------------
+
+8. RELATIVE ANCESTOR NAVIGATION (FISH-EYE)
+------------------------------------------------------------------------------
+Current location stored as stack: {'screen': str, 'id': str, 'page': int}.
+
+Full hierarchy is truncated to terminal width via fish-eye algorithm:
+    ...[1]LEVEL8/[2]LEVEL9/[3]LEVEL10/[4]LEVEL11/[5]LEVEL12/
+
+Visible segments ≤ 7 (Miller, 1956 — emergent property).
+
+Number_map generated per screen render:
+    {1: uuid_at_depth_n-4, 2: uuid_at_depth_n-3, ...}
+
+Jump command: j<num>
+- Lookup: O(1)
+- Path reconstruction: O(d) where d ≤ visible depth (≤ 10)
+- Stack assignment: O(d)
+
+Jump back command (jb): returns to previous location before jump
+- History maintained separately from navigation stack
+- Enables "go back to where I was" without losing current context
+
+Navigation time is constant with respect to total item count.
+Formal proof in /docs/(O)1_COMPUTATIONAL_ANALYSIS.md
+
+9. STACK-BASED NAVIGATION WITH BRANCH-AWARE PATH RECONSTRUCTION
+------------------------------------------------------------------------------
+Navigation stack maintains complete session history:
+    [home, list, notebook, subnotebooks, note, ...]
+
+Path reconstruction is branch-aware:
+    - If target already in stack → truncate to that position
+    - If target not in stack → build full hierarchy from root
+    - Jump history preserved for back navigation
+
+This enables:
+    - O(1) access to any previously visited location
+    - Natural "back" behavior matching browser expectations
+    - Jump without losing ability to return
+    - Muscle memory development for frequent locations
+
+------------------------------------------------------------------------------
+                              SEARCH & DISCOVERY
+------------------------------------------------------------------------------
+
+10. UNIFIED SEARCH ACROSS ALL STATES
+------------------------------------------------------------------------------
+Single search interface finds all items regardless of state:
+
+CURRENT ITEMS
+    - Live notes in active notebooks
+    - Substring match on title/content
+    - Notebook names also searchable
+    - Real-time as user types
+
+DELETED ITEMS
+    - Git grep for commits containing "DELETED" and query
+    - Locate commit before deletion via parent resolution
+    - Extract UUID from commit message or structure
+    - Reconstruct item from pre-deletion state
+    - Results appear alongside current items with no distinction
+    - User cannot tell what is current vs deleted without viewing
+
+RENAMED ITEMS
+    - Git grep for commits containing "RENAMED" and query
+    - Extract both old and new names from commit message
+    - UUID remains unchanged across rename
+    - Search finds item regardless of current name
+    - All historical names are searchable via commit history
+    - Results marked as renamed but otherwise identical
+
+TIMELINE (separate but complementary)
+    - Shows version history of a single item
+    - Accessed via 't' command on any item
+    - Chronological list of all versions
+    - Each version viewable in read-only mode
+    - Timeline shows evolution. Search shows existence.
+
+RESULTS MERGING
+    - All result types combined into single list
+    - Deduplication by UUID (newest version shown)
+    - Chronological sorting (most recent first)
+    - Pagination adapts to terminal height
+    - Numbered selection works identically for all types
+
+SEARCH DOES NOT DISTINGUISH
+    - Between current, deleted, or renamed
+    - Between notes, files, or notebooks
+    - Between locations or notebooks
+    - All writing is equally findable. All time is equally present.
+
+11. COMPREHENSIVE SEARCH ARCHITECTURE
+------------------------------------------------------------------------------
+Search system is modular with three components:
+
+SIMPLE SEARCH MODULE
+    - Searches current items only
+    - Fast, real-time, used for quick lookup
+    - Returns note_id + notebook_id pairs
+    - Used by comprehensive search as foundation
+
+GIT RESURRECTION MODULE
+    - Mines Git history for deleted and renamed items
+    - Parses commit messages for UUIDs and actions
+    - Reconstructs items from historical commits
+    - Creates temporary JSON structures for viewing
+    - Cleans up temporary files after session
+
+COMPREHENSIVE SEARCH MODULE
+    - Unifies simple search + resurrection results
+    - Deduplicates by UUID
+    - Presents unified chronological list
+    - Handles viewing of all result types
+    - Maintains separate navigation stack for search sessions
+    - Integrates timeline for historical versions
+
+This architecture enables:
+    - Single interface for all information
+    - No user awareness of item state required
+    - Complete temporal coverage without complexity
+    - Modular testing and maintenance
+
+12. ACTIVITY VIEW (GLOBAL TEMPORAL FEED)
+------------------------------------------------------------------------------
+System provides global activity view across all notebooks:
+
+    git log -n50 --all --pretty=format:%H|%ai|%s|%b
+
+For each commit, extract:
+    - Hash, date, subject, body
+    - UUID via regex patterns
+    - Action type (CREATED, UPDATED, DELETED, RENAMED)
+    - Notebook name from path
+
+Display shows:
+    - Timestamp, action, title, notebook
+    - Paginated by terminal height
+    - Numbered for selection
+
+Viewing a commit:
+    - Reconstruct item state at that commit
+    - Show as resurrected item (read-only)
+    - Timeline available from within view
+    - Export capability for file notes
+
+Activity view provides:
+    - Cross-notebook awareness
+    - Temporal overview without search
+    - Discovery of changes across all writing
+    - Entry point to historical exploration
+
+------------------------------------------------------------------------------
+                              RESURRECTION LAYER
+------------------------------------------------------------------------------
+
+13. COMPLETE HIERARCHY RESURRECTION
+------------------------------------------------------------------------------
+Deletion commits to Git; data is not removed (soft delete).
+Search finds UUID of deleted item.
+Commit before deletion is located via:
+
+    git log --before <deletion_commit> --grep uuid:<UUID>
+
+Full hierarchy is extracted from that commit:
+    - structure.json at that point in time
+    - notes.json and files.json at that point
+
+Subnotebooks restored with all nested content:
+    - Recursive collection of all notes and files
+    - Complete preservation of parent-child relationships
+    - All content from that historical moment
+
+Temporary directory created with complete structure:
+    - Minimal structure.json containing restored hierarchy
+    - notes.json with all note content
+    - files.json with all file content
+
+One key press restores item to current structure:
+    - UUID unchanged (permanent identity preserved)
+    - Item reappears in current notebook
+    - Git commit of restoration (CREATED event)
+    - Temporal continuity preserved across deletion/resurrection
+
+14. TIMELINE STATE RECONSTRUCTION
+------------------------------------------------------------------------------
+Any item at any commit can be reconstructed via t command:
+
+    git log --grep uuid:<UUID> --all --pretty=format:"%H|%ai|%s"
+
+Each commit represents a version where the item changed.
+Results sorted chronologically (newest first).
+
+For any selected version:
+
+    git show <commit_hash>:structure.json
+    git show <commit_hash>:notes.json
+    git show <commit_hash>:files.json
+
+Recursive extraction preserves complete hierarchy:
+    - If item is note → show note with context
+    - If item is subnotebook → show entire subnotebook
+    - If item is notebook → show complete notebook
+
+Temporary directories isolate reconstructed state:
+    - Read-only access ensures no accidental modification
+    - Export available for file notes
+    - Timeline navigation within historical context
+
+Display mode indicates historical context:
+    - Header shows "Historical: {title}"
+    - Date from commit shown prominently
+    - No edit/rename options (read-only)
+
+Timeline shows evolution. Search shows existence.
+Both use the same Git temporal database. Both are separate interfaces.
+
+------------------------------------------------------------------------------
+                              RECOVERY LAYER
+------------------------------------------------------------------------------
+
+15. CRASH RECOVERY WITH UUID KEYING
+------------------------------------------------------------------------------
+External editor sessions spawn background autosave thread.
+Every 30 seconds, temporary file content is saved to:
+
+    .recovery/{note_title}_{uuid[-6:]}.{ext}
+
+Recovery file contains:
+    - note_uuid, parent_notebook_uuid
+    - content, is_file_note flag, file_extension
+    - note_title, last_updated timestamp
+
+On notebook access, recovery system checks for orphaned files:
+    - Scan recovery directory for files matching notebook UUID
+    - For each file, check if note exists in current structure
+
+Two recovery scenarios:
+
+CREATION RECOVERY (note never saved)
+    - Note UUID not found in current structure
+    - Create new Note object with recovered content
+    - Add to notebook, save silently
+    - Commit creation to Git with proper metadata
+    - Clean up recovery file
+
+MODIFICATION RECOVERY (note crashed during edit)
+    - Note UUID found in current structure
+    - Compare recovery timestamp with note.updated
+    - If recovery newer, replace content
+    - Save silently, commit edit to Git
+    - Clean up recovery file
+
+Recovery is silent and automatic:
+    - No user interruption unless content restored
+    - One notification of recovered count
+    - All operations logged for debugging
+
+Recovery files cleaned after 24 hours if orphaned.
+
+------------------------------------------------------------------------------
+                              INTERFACE LAYER
+------------------------------------------------------------------------------
+
+16. DATA-AS-UI
+------------------------------------------------------------------------------
+Every displayed item is numbered.
+Every number is an actionable command:
+
+    [1] Note title → v1 views the note
+    [2] Subnotebook → v2 opens the subnotebook
+    [1]/[2]/[3] in path → j2 jumps to position 2
+    [1] Search result → v1 views that result
+    [2] Activity item → v2 views that historical state
+
+No separate controls. No menus. No toolbar.
+The data IS the interface. The numbers ARE the commands.
+No modes. No hidden states. No learning curve.
+
+This applies universally:
+    - Notebook lists
+    - Search results
+    - Activity feed
+    - Timeline entries
+    - Subnotebook lists
+    - Path display
+
+Consistent numbering across all contexts means:
+    - Once learned, always known
+    - No context switching
+    - Muscle memory transfers
+
+17. FOOTER AS CONTEXTUAL COMMAND PALETTE
+------------------------------------------------------------------------------
+Footer displays available commands based on current context:
+
+    [C]reate  [V]iew  [D]elete  [B]ack  [N]ext  [P]rev  [Q]uit
+
+Commands appear only when relevant:
+    - [N]ext appears only when more pages exist
+    - [D]elete appears only when items can be deleted
+    - [X]port appears only for file notes
+    - [T]imeline appears only for items with history
+    - [J]ump appears only when jump targets exist
+
+Footer is generated dynamically:
+    - Based on current screen and state
+    - Based on terminal width (wrapping if needed)
+    - Based on user permissions (if implemented)
+
+This provides:
+    - Progressive disclosure (learn as you go)
+    - No overwhelming feature list
+    - Just-in-time learning
+    - Error prevention (commands not shown can't be used wrong)
+
+18. EXTERNAL EDITOR INTEGRATION WITH RECOVERY
+------------------------------------------------------------------------------
+System integrates with external editors for writing:
+
+DETECTION
+    - Checks for micro, nvim, vim, nano in order
+    - Falls back to internal editor if none found
+    - Remembers user's choice per session
+
+SYNTAX HIGHLIGHTING
+    - File notes use extension (file.py, file.md)
+    - Temporary file created with correct suffix
+    - Editor opens with appropriate syntax highlighting
+
+AUTOSAVE (Neovim only)
+    - Commands injected for Neovim:
+        set autowriteall
+        set updatetime=30000
+        autocmd CursorHold * silent! write
+    - Saves every 30 seconds without user action
+
+RECOVERY INTEGRATION
+    - Background thread copies temp file to recovery every 30s
+    - UUID keys the recovery file to specific note
+    - On crash, recovery system restores last autosave
+    - No user data lost even if editor crashes
+
+EXPORT FOR FILE NOTES
+    - File notes can be exported to filesystem
+    - Export directory remembered (last 3)
+    - Overwrite confirmation
+    - Path history for quick reuse
+
+19. FILE NOTE SYSTEM WITH EXTENSION MANAGEMENT
+------------------------------------------------------------------------------
+File notes are specialized notes with extensions:
+
+ALLOWED EXTENSIONS
+    - Web: html, js, css, ts, scss, vue, jsx
+    - Backend: py, php, rb, java, c, cpp, go, rs, pl, lua
+    - Mobile: swift, kt
+    - DevOps: sh, yml, yaml, toml, ini, cfg
+    - Data: json, xml, sql
+    - Documentation: bib, tex, md, txt, sty, cls
+
+PURPOSE DETECTION
+    - Each extension maps to a purpose description
+    - Display shows "Python script" not just ".py"
+    - Helps users understand file type at glance
+
+INITIAL CONTENT TEMPLATES
+    - Each extension gets appropriate template
+    - Python: shebang line
+    - HTML: basic structure
+    - Markdown: heading
+    - Templates accelerate creation
+
+STORAGE
+    - Content stored in files.json (separate from notes.json)
+    - Extension stored in structure.json with note metadata
+    - Git commits include file-specific metadata
+
+EXPORT
+    - One-key export to filesystem
+    - Extension preserved
+    - Syntax highlighting in external editor
+    - Export history for quick reuse
+
+------------------------------------------------------------------------------
+                              IMPORT LAYER
+------------------------------------------------------------------------------
+
+20. NOTEBOOK IMPORTER WITH VALIDATION PIPELINE
+------------------------------------------------------------------------------
+System can import existing notebooks from any location:
+
+VALIDATION PIPELINE (executed in order):
+
+    1. PATH ACCESS
+        - Check existence, readability, writability
+        - Normalize path (expanduser, abspath, normcase)
+        - Cross-platform path handling
+
+    2. FILE STRUCTURE
+        - Verify structure.json, notes.json, files.json exist
+        - All three required for valid notebook
+
+    3. GIT REPOSITORY
+        - Check for .git directory
+        - Verify Git commands work
+        - Git optional but checked
+
+    4. DATA FORMAT
+        - Parse structure.json
+        - Validate required fields (id, name, notes, subnotebooks)
+        - Check JSON validity
+
+    5. DUPLICATE CHECK
+        - Verify path not already registered
+        - Compare normalized paths
+
+IMPORT PROCESS
+    - Load notebook via load_notebook_from_path()
+    - Register in registry with path
+    - Add to manager.notebooks
+    - Save registry
+
+PATH HISTORY
+    - Last 3 import paths remembered
+    - Quick selection by number
+    - Persists across sessions
+
+This enables:
+    - Portable notebooks (USB drives, network shares)
+    - Migration between machines
+    - Backup restoration
+    - Sharing notebooks with others
+
+------------------------------------------------------------------------------
+                              INTEGRATED SYSTEM
+------------------------------------------------------------------------------
+
+21. COMPLETE INTEGRATION LAYER
+------------------------------------------------------------------------------
+The above twenty layers function as an integrated whole.
+Each layer depends on and serves the layers above.
+All layers serve the user's experience of disappearance.
+
+The integration is visible in cross-layer operations:
+
+SEARCH EXAMPLE
+    - User types "s api" (Layer 10)
+    - Simple search finds current matches (Layer 10)
+    - Git resurrection finds deleted matches (Layer 11)
+    - UUID deduplication ensures uniqueness (Layer 1)
+    - Results display with numbers (Layer 16)
+    - User selects v2 to view (Layer 16)
+    - If deleted, resurrection reconstructs (Layer 13)
+    - Temporary directory created (Layer 13)
+    - Display shows historical context (Layer 14)
+    - User can view, export, or timeline (Layer 18)
+
+DELETE EXAMPLE
+    - User types d2 on note (Layer 16)
+    - System presents choice: forget or erase (Layer 7)
+    - User chooses erase, types confirmation (Layer 7)
+    - Eraser identifies item by UUID (Layer 1)
+    - git-filter-repo purges all traces (Layer 6)
+    - Git garbage collection completes (Layer 6)
+    - Note removed from current view (Layer 7)
+    - Registry updated (Layer 2)
+    - Operation complete, GDPR compliant (Layer 7)
+
+ACTIVITY VIEW EXAMPLE
+    - User types "a" from home (Layer 12)
+    - System fetches commits across all notebooks (Layer 4)
+    - Parses UUIDs, actions, dates (Layer 12)
+    - Displays paginated list (Layer 16)
+    - User selects v3 to view (Layer 16)
+    - System reconstructs item at that commit (Layer 14)
+    - Shows historical version read-only (Layer 14)
+    - Timeline available from within view (Layer 14)
+
+IMPORT EXAMPLE
+    - User chooses import from menu (Layer 20)
+    - Enters path or selects from history (Layer 20)
+    - Validation pipeline runs (Layer 20)
+    - Notebook loads from files (Layer 2)
+    - Registers in registry (Layer 2)
+    - Git history preserved if present (Layer 4)
+    - Notebook appears in home screen (Layer 8)
+
+CRASH RECOVERY EXAMPLE
+    - User edits note in external editor (Layer 18)
+    - Background thread saves every 30s (Layer 15)
+    - System crashes unexpectedly (Layer 15)
+    - User restarts, opens notebook (Layer 15)
+    - Recovery system detects orphaned file (Layer 15)
+    - Compares timestamps, finds newer (Layer 15)
+    - Restores content silently (Layer 15)
+    - Commits restoration to Git (Layer 4)
+    - User never knows data was at risk (Layer 15)
+
+Each operation touches multiple layers.
+Each layer is necessary for the operation to feel simple.
+The integration is the invention.
+
+22. TERMINAL USER INTERFACE AS INTEGRAL COMPONENT
+------------------------------------------------------------------------------
+The terminal user interface is not a separate component. It is the visible manifestation of the integrated logic chain described above.
+
+Every element of the TUI is a direct expression of the underlying architecture:
+
+- Numbered lists are the navigation layer made visible
+- Path display is the fish-eye algorithm rendered
+- j3 command is relative navigation in action
+- s query is unified search at work
+- t command is timeline reconstruction
+- v command is data-as-UI
+- b command is stack navigation
+- a command is activity view
+- d command triggers eraser with dual options
+- Footer options reflect available operations
+- Header format maintains cognitive consistency
+- Page indicator respects working memory limits
+- External editor integration enables file-type handling with recovery
+- Import flow validates and registers
+- Recovery runs silently in background
+
+The TUI cannot be separated from the invention. It is the invention, made visible. Any implementation that preserves this interaction model practices the disclosed invention.
+
+This disclosure covers all present and future terminal-based implementations that maintain:
+
+- Relative spatial navigation via numbered access
+- Unified search across all states (current, deleted, renamed)
+- Separate timeline for version history
+- Data-as-UI with actionable numbered elements
+- Fish-eye path display adapted to terminal width
+- Stack-based navigation with jump history
+- Resurrection and timeline capabilities
+- Crash recovery with UUID-keyed restoration
+- External editor integration with syntax highlighting
+- Activity view across all notebooks
+- Dual delete (soft/hard) with GDPR compliance
+- Git filter-repo integration for complete erasure
+- Notebook import with validation pipeline
+- File note system with extension management
+
+23. CROSS-PLATFORM ADAPTATIONS (FUTURE IMPLEMENTATIONS)
+------------------------------------------------------------------------------
+The invention is platform-independent. The following adaptations are disclosed as embodiments of the same integrated system:
+
+WEB ADAPTATION
+------------------------------------------------------------------------------
+A web-based implementation would preserve the same cognitive patterns:
+
+- Relative navigation via numbered elements (clickable)
+- Unified search across all states (current/deleted/renamed)
+- Timeline for version history (separate interface)
+- Data-as-UI with all displayed items actionable
+- Fish-eye path display adapted to browser width via dynamic recalculation
+- Stack-based navigation with browser history integration
+- Resurrection and timeline via backend API
+- UUID permanence maintained across sessions
+- Git temporal database accessible via API layer
+- Activity view as global feed
+- Dual delete with UI confirmation
+- Import via upload or path specification
+- Recovery via browser storage or backend
+
+The core invention — spatial navigation, unified search across states, timeline for history, cognitive alignment, GDPR compliance through architecture — remains identical. Only the presentation layer adapts to browser constraints.
+
+DESKTOP NATIVE ADAPTATION
+------------------------------------------------------------------------------
+A native desktop application would maintain the same interaction model:
+
+- Keyboard-driven navigation with numbered access
+- Unified search across all states
+- Separate timeline interface for version history
+- Fish-eye path display optimized for window width
+- Resurrection and timeline with native UI components
+- Data-as-UI with all elements actionable
+- Crash recovery with native file system integration
+- External editor spawning with syntax highlighting
+- Activity view as native list
+- Dual delete with native dialog confirmation
+- Git filter-repo integration via bundled binary
+- Import via native file picker with validation
+- File note system with native editor integration
+
+The invention's cognitive patterns are preserved. The implementation adapts to native platform conventions while maintaining the core interaction model.
+
+MOBILE ADAPTATION
+------------------------------------------------------------------------------
+A mobile implementation would adapt the same principles:
+
+- Spatial navigation via numbered gestures or taps
+- Unified search across all states with touch-friendly interface
+- Separate timeline view for version history
+- Fish-eye path display adapted to screen width
+- Resurrection and timeline with native mobile components
+- Data-as-UI with tappable numbered elements
+- Git temporal database via local storage or API
+- Crash recovery with mobile background processing
+- Activity view as scrollable feed
+- Dual delete with swipe + confirmation
+- Import via file picker or cloud storage integration
+- File note system with mobile editor integration
+
+The core invention — relative spatial access, unified search across states, timeline for history, meaning-based findability, GDPR by architecture — remains unchanged. Input modality adapts to touch while preserving cognitive alignment.
+
+FUTURE PLATFORM ADAPTATIONS
+------------------------------------------------------------------------------
+Any future platform that implements:
+
+- Relative spatial navigation to hierarchical data
+- Unified search across all states (current, deleted, renamed)
+- Separate timeline interface for version history
+- Data-as-UI with actionable displayed elements
+- Fish-eye or adaptive path display
+- Resurrection and timeline capabilities
+- Crash recovery with identity-based restoration
+- Activity view across all items
+- Dual delete with compliance options
+- Git-based temporal queryability
+- Import validation for portable notebooks
+- File-type awareness with syntax support
+
+...practices the invention disclosed herein. The specific implementation may adapt to platform constraints, but the cognitive patterns, compliance architecture, and integrated logic chain remain the property of this prior art.
+
+24. COGNITIVE ALIGNMENT (EMERGENT PROPERTY)
+------------------------------------------------------------------------------
+The following properties emerge from the integrated system. They are documented as observed phenomena, not claimed as separate inventions:
+
+SPATIAL MEMORY ALIGNMENT
+    - Relative numbering matches Tversky's spatial mental models (1992)
+    - Users navigate by position, not path
+    - j3 becomes automatic within days
+
+TEMPORAL MEMORY ALIGNMENT
+    - Unified search across all states matches episodic recall
+    - Timeline shows evolution — separate but complementary
+    - Users find deleted items without knowing they were deleted
+
+WORKING MEMORY ALIGNMENT
+    - Fish-eye display (4-6 chunks) matches Miller's 7±2 (1956)
+    - Users are not cognitively overloaded
+    - Path length never exceeds cognitive capacity
+
+COGNITIVE LOAD ALIGNMENT
+    - Zero extraneous UI matches Sweller's load theory (1988)
+    - All attention is available for writing
+    - No learning curve because no mode switching
+
+AFFORDANCE ALIGNMENT
+    - Numbered items as action targets matches Gibson (1979)
+    - Users perceive action possibilities directly
+    - "What can I do?" is answered by what they see
+
+COGNITIVE EASE ALIGNMENT
+    - O(1) predictable response matches Kahneman & Tversky (1974)
+    - Users report the system "feels right"
+    - No anxiety about scale or complexity
+
+EMBODIMENT ALIGNMENT
+    - Command migration to muscle memory matches Barsalou (1999)
+    - Users report the terminal "disappears"
+    - Fingers know what to do before conscious thought
+
+FLOW ALIGNMENT
+    - Interruption-free writing matches Csikszentmihlyi (1990)
+    - Users report writing for hours without noticing
+    - The tool becomes extension of thought
+
+GDPR ALIGNMENT
+    - Compliance by architecture matches "privacy by design" (GDPR Recital 78)
+    - No data collection means no consent required
+    - Dual delete implements Article 17 perfectly
+    - JSON format implements Article 20 perfectly
+    - Local storage means user control absolute
+
+These theories were not consulted during development.
+They were discovered afterward and are cited to explain observed behavior.
+The system existed before the explanation. It continues to exist independent of it.
+The alignment validates the approach. It does not define it.
+
+25. INTEGRATED SYSTEM (COMPLETE)
+------------------------------------------------------------------------------
+The above twenty-four layers function as an integrated whole.
+Each layer depends on and serves the layers above.
+All layers serve the user's experience of disappearance.
+
+This specific combination of:
+
+- UUID permanence (Layer 1)
+- Notebook registry and portability (Layer 2)
+- Three-file atomic architecture (Layer 3)
+- Git as temporal database (Layer 4)
+- Eight structured commit operations (Layer 5)
+- Git filter-repo integration (Layer 6)
+- Complete GDPR compliance (Layer 7)
+- Relative ancestor navigation (Layer 8)
+- Stack-based navigation (Layer 9)
+- Unified search across all states (Layer 10)
+- Comprehensive search architecture (Layer 11)
+- Activity view (Layer 12)
+- Complete hierarchy resurrection (Layer 13)
+- Timeline reconstruction (Layer 14)
+- Crash recovery with UUID keying (Layer 15)
+- Data-as-UI (Layer 16)
+- Footer as contextual command palette (Layer 17)
+- External editor integration (Layer 18)
+- File note system (Layer 19)
+- Notebook importer with validation (Layer 20)
+- Complete integration layer (Layer 21)
+- Terminal UI as integral component (Layer 22)
+- Cross-platform adaptations (Layer 23)
+- Emergent cognitive alignment (Layer 24)
+
+...constitutes a novel, non-obvious, and fully disclosed system for human-computer interaction that mirrors human cognitive patterns while achieving complete regulatory compliance through architecture.
+
+===============================================================================
+                            PRIOR ART ASSERTION
+===============================================================================
+
+I, sys_ronin, do hereby establish this document and the accompanying
+source code repository as prior art under 35 U.S.C. § 102(a)(1).
+
+Date of public disclosure: February 2026
+Mode of disclosure: Public GitHub repository
+Status: Irrevocable and unwithdrawable
+
+All concepts, implementations, combinations, adaptations, and variations disclosed herein are now and forever part of the public domain.
+
+No party may:
+- Obtain valid patent claims covering any disclosed concept
+- Enforce existing patents against implementations of these concepts
+- Assert trade secret protection over any disclosed implementation
+- Claim exclusive rights to any combination herein disclosed
+- Patent any adaptation or variation that preserves the disclosed cognitive patterns
+- Claim GDPR compliance features as their own innovation
+- Patent dual-delete architectures with compliance properties
+- Patent UUID-in-commit-message temporal databases
+- Patent fish-eye navigation with relative numbering
+- Patent unified search across current/deleted/renamed states
+- Patent activity views across distributed Git repositories
+- Any combination of the above
+
+This disclosure is made in the public interest.
+It may be cited in any patent examination, litigation, or prior art search.
+It may be used as evidence of prior art in any jurisdiction.
+
+No legal advice is offered. No warranty is provided.
+This document is a statement of fact, not a legal opinion.
+
+===============================================================================
+                            VERIFICATION
+===============================================================================
+
+Repository:    https://github.com/worried-pixel/terminal-notes
+First commit:  February 2026
+Documents:     
+    PRIOR_ART_DISCLOSURE.md (this document)
+    /docs/ACCIDENTAL_(O)1_VALIDATION.md
+    /docs/(O)1_COMPUTATIONAL_ANALYSIS.md
+    /docs/COMPLEXITY_TO_SERVE_SIMPLICITY.md
+    /docs/DOOMSDAY_APP_FOR_WRITING.md
+    /docs/AI_ASSISTED_SYSTEMS_METHODOLOGY.md
+    /docs/AI_MISCONCEPTION.md
+    /docs/MODULAR_ARCHITECTURE.md
+    /docs/ACCIDENTAL_VALIDATION_COGNITIVE_ARCHITECTURE.md
+    /docs/ACCIDENTAL_VALIDATION_DATA-AS-UI.md
+    /docs/THE_COGNITIVE_CONNECTOR.md
+    /docs/TERMINAL_4D_INFINITY.md
+    /docs/GDPR.md
+    /docs/ETERNAL_LICENSE
+    /docs/ABOUT
+    README.md
+
+All timestamps are verifiable via GitHub.
+All content is public and freely accessible.
+No confidentiality obligations apply.
+No embargo period was observed.
+
+===============================================================================
+END OF PRIOR ART DISCLOSURE
+===============================================================================
