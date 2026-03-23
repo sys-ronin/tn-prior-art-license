@@ -1,4 +1,3 @@
-I have carefully reviewed your codebase before writing. This document reflects the actual implementation, not assumptions.
 
 ---
 
