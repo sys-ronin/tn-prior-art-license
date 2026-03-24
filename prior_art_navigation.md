@@ -202,13 +202,12 @@ Every jump (`j<number>`) saves current position to history.
 
 **Result:** Navigation is reversible. Users explore freely.
 
----
 
 ### Layer 8: Responsive Terminal UI
 
 Terminal dimensions detected at each redraw:
 
-```python
+python
 try:
     columns, rows = shutil.get_terminal_size()
     width = max(60, columns)
@@ -223,7 +222,6 @@ All elements adapt:
 - Pagination indicators adjust to width
 - No fixed sizes. No assumption about terminal.
 
----
 
 ## Unified Search with Action Buttons
 
@@ -253,13 +251,11 @@ Search: 'config' (3 matches)
 - With action wildcard (`created*`): NO action prefix
 - Without action wildcard: SHOW action prefix
 
----
 
 ### Context-Aware Action Buttons
 
 Action buttons change based on selected item type and state.
 
----
 
 ## Applications Across Domains (Interface Visualizations)
 
