@@ -264,7 +264,6 @@ Action buttons change based on selected item type and state.
 
 ### Domain 1: Network Device Configuration (Cisco, Juniper, Arista)
 
-```
 =====================================
 [1]configure/[2]interface/[3]gigabitethernet0/1/
 =====================================
@@ -277,13 +276,11 @@ Action buttons change based on selected item type and state.
 [V]iew  [E]dit  [C]opy  [A]pply  [D]elete  [R]evert  [B]ack  [Q]uit
 
 > v1
-```
 
 ---
 
 ### Domain 2: Filesystem Navigation
 
-```
 =====================================
 [1]home/[2]user/[3]projects/[4]web/[5]src/
 =====================================
