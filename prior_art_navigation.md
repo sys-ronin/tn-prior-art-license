@@ -47,7 +47,7 @@ This system externalizes that cognitive pattern:
 
 Every displayed item has a number. The numbers reset per screen. Numbers are independent of absolute depth.
 
-
+```
 [1] projects
   [1] web
     [1] index.html
@@ -57,6 +57,7 @@ Every displayed item has a number. The numbers reset per screen. Numbers are ind
   [3] desktop
 [2] personal
 [3] archives
+```
 
 **Numbering rules:**
 - Numbers start at 1 for each screen
@@ -77,11 +78,15 @@ Every displayed item has a number. The numbers reset per screen. Numbers are ind
 
 The path header shows current position with relative numbering:
 
+```
 [1]home/[2]user/[3]projects/[4]web/[5]src/
+```
 
 When path exceeds terminal width, smart truncation applies:
 
+```
 [1].../[2]web/[3]src/
+```
 
 **Truncation rules:**
 - Left side truncated first (older ancestors)
@@ -101,7 +106,9 @@ When path exceeds terminal width, smart truncation applies:
 
 Each segment in the path header has a number:
 
+```
 [1]home/[2]user/[3]projects/[4]web/[5]src/
+```
 
 **Commands:**
 - `j2` → jump to "user" (second segment)
@@ -168,12 +175,14 @@ All navigation uses only numbers and single keys. No path memorization.
 
 When items exceed screen height, pagination applies:
 
+```
 [1] Item 1
 [2] Item 2
 ...
 [14] Item 14
 
 <<                            Page 2 of 5                            >>
+```
 
 **Pagination rules:**
 - Items per page = terminal height - fixed UI elements
@@ -202,12 +211,13 @@ Every jump (`j<number>`) saves current position to history.
 
 **Result:** Navigation is reversible. Users explore freely.
 
+---
 
 ### Layer 8: Responsive Terminal UI
 
 Terminal dimensions detected at each redraw:
 
-python
+```python
 try:
     columns, rows = shutil.get_terminal_size()
     width = max(60, columns)
@@ -215,6 +225,7 @@ try:
 except:
     width = 80
     height = 24
+```
 
 All elements adapt:
 - Items per page = height - fixed_lines
@@ -222,6 +233,7 @@ All elements adapt:
 - Pagination indicators adjust to width
 - No fixed sizes. No assumption about terminal.
 
+---
 
 ## Unified Search with Action Buttons
 
@@ -229,6 +241,7 @@ All elements adapt:
 
 Search results show all items regardless of state (current, deleted, renamed):
 
+```
 Search: 'config' (3 matches)
 
 [1] deleted: config.txt                                          [network]
@@ -236,7 +249,7 @@ Search: 'config' (3 matches)
 [3] created: vlan10                                              [switch]
 
 [S]earch  [V]iew  [R]estore  [B]ack  [Q]uit
-
+```
 
 **Search syntax (order independent):**
 - `created*`, `deleted*`, `updated*`, `renamed*`, `restored*`, `erased*`
@@ -251,17 +264,19 @@ Search: 'config' (3 matches)
 - With action wildcard (`created*`): NO action prefix
 - Without action wildcard: SHOW action prefix
 
+---
 
 ### Context-Aware Action Buttons
 
 Action buttons change based on selected item type and state.
 
+---
 
 ## Applications Across Domains (Interface Visualizations)
 
 ### Domain 1: Network Device Configuration (Cisco, Juniper, Arista)
 
-
+```
 =====================================
 [1]configure/[2]interface/[3]gigabitethernet0/1/
 =====================================
@@ -274,13 +289,13 @@ Action buttons change based on selected item type and state.
 [V]iew  [E]dit  [C]opy  [A]pply  [D]elete  [R]evert  [B]ack  [Q]uit
 
 > v1
+```
 
-
-
+---
 
 ### Domain 2: Filesystem Navigation
 
-
+```
 =====================================
 [1]home/[2]user/[3]projects/[4]web/[5]src/
 =====================================
@@ -293,10 +308,13 @@ Action buttons change based on selected item type and state.
 [V]iew  [E]dit  [M]ove  [C]opy  [D]elete  [R]ename  [B]ack  [Q]uit
 
 > v1
+```
+
+---
 
 ### Domain 3: Database Administration
 
-
+```
 =====================================
 [1]production/[2]public/[3]tables/
 =====================================
@@ -309,9 +327,13 @@ Action buttons change based on selected item type and state.
 [V]iew  [E]dit  [S]elect  [B]ackup  [D]rop  [Q]uit
 
 > v1
+```
+
+---
 
 ### Domain 4: Cloud Infrastructure (AWS)
 
+```
 =====================================
 [1]EC2/[2]Instances/[3]i-1234abcd/
 =====================================
@@ -324,9 +346,13 @@ Action buttons change based on selected item type and state.
 [V]iew  [S]tart  [S]top  [R]eboot  [T]erminate  [C]onnect  [B]ack  [Q]uit
 
 > v1
+```
+
+---
 
 ### Domain 5: Container Orchestration (Kubernetes)
 
+```
 =====================================
 [1]namespaces/[2]default/[3]pods/
 =====================================
@@ -339,10 +365,13 @@ Action buttons change based on selected item type and state.
 [V]iew  [L]ogs  [E]xec  [D]elete  [R]estart  [B]ack  [Q]uit
 
 > v1
+```
+
+---
 
 ### Domain 6: API Documentation
 
-
+```
 =====================================
 [1]API/[2]v2/[3]users/
 =====================================
@@ -356,9 +385,13 @@ Action buttons change based on selected item type and state.
 [V]iew  [T]est  [C]opy  [E]xport  [B]ack  [Q]uit
 
 > v1
+```
+
+---
 
 ### Domain 7: System Monitoring (Cockpit)
 
+```
 =====================================
 [1]System/[2]Services/
 =====================================
@@ -371,9 +404,13 @@ Action buttons change based on selected item type and state.
 [V]iew  [S]tart  [S]top  [R]estart  [L]ogs  [B]ack  [Q]uit
 
 > v1
+```
+
+---
 
 ### Domain 8: Operating System Settings
 
+```
 =====================================
 [1]System/[2]Network/[3]Wi-Fi/
 =====================================
@@ -386,9 +423,13 @@ Action buttons change based on selected item type and state.
 [V]iew  [C]onnect  [F]orget  [P]roperties  [B]ack  [Q]uit
 
 > v1
+```
+
+---
 
 ### Domain 9: Source Code Repository (Git)
 
+```
 =====================================
 [1]repository/[2]src/[3]main.py
 =====================================
@@ -400,10 +441,13 @@ Action buttons change based on selected item type and state.
 [V]iew  [E]dit  [C]ommit  [P]ush  [P]ull  [B]ranch  [B]ack  [Q]uit
 
 > v1
+```
 
+---
 
 ### Domain 10: IoT Device Management
 
+```
 =====================================
 [1]factory/[2]floor2/[3]sensor_012/
 =====================================
@@ -416,11 +460,15 @@ Action buttons change based on selected item type and state.
 [V]iew  [C]alibrate  [R]eboot  [U]pdate  [D]isable  [B]ack  [Q]uit
 
 > v1
+```
+
+---
 
 ## Unified Search Across All Domains
 
 ### Search Results (Network Domain)
 
+```
 deleted: (2 matches)
 
 [1] interface vlan10                                                [switch]
@@ -429,9 +477,11 @@ deleted: (2 matches)
 [S]earch  [V]iew  [R]estore  [B]ack  [Q]uit
 
 > v1
+```
 
 ### Search Results (Filesystem Domain)
 
+```
 deleted: (1 matches)
 
 [1] old_config.txt                                                  [backup]
@@ -439,9 +489,11 @@ deleted: (1 matches)
 [S]earch  [V]iew  [R]estore  [B]ack  [Q]uit
 
 > v1
+```
 
 ### Search Results (Database Domain)
 
+```
 updated: (1 matches)
 
 [1] users (+234/-120)                                               [public]
@@ -449,9 +501,11 @@ updated: (1 matches)
 [S]earch  [V]iew  [B]ack  [Q]uit
 
 > v1
+```
 
 ### Search Results (Cloud Domain)
 
+```
 deleted: (1 matches)
 
 [1] i-5678efgh                                                      [terminated]
@@ -459,6 +513,9 @@ deleted: (1 matches)
 [S]earch  [V]iew  [R]estore  [B]ack  [Q]uit
 
 > v1
+```
+
+---
 
 ## Cognitive Science Validation
 
