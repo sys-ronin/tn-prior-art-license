@@ -293,13 +293,11 @@ Action buttons change based on selected item type and state.
 [V]iew  [E]dit  [M]ove  [C]opy  [D]elete  [R]ename  [B]ack  [Q]uit
 
 > v1
-```
 
 ---
 
 ### Domain 3: Database Administration
 
-```
 =====================================
 [1]production/[2]public/[3]tables/
 =====================================
@@ -312,13 +310,11 @@ Action buttons change based on selected item type and state.
 [V]iew  [E]dit  [S]elect  [B]ackup  [D]rop  [Q]uit
 
 > v1
-```
 
 ---
 
 ### Domain 4: Cloud Infrastructure (AWS)
 
-```
 =====================================
 [1]EC2/[2]Instances/[3]i-1234abcd/
 =====================================
@@ -331,13 +327,11 @@ Action buttons change based on selected item type and state.
 [V]iew  [S]tart  [S]top  [R]eboot  [T]erminate  [C]onnect  [B]ack  [Q]uit
 
 > v1
-```
 
 ---
 
 ### Domain 5: Container Orchestration (Kubernetes)
 
-```
 =====================================
 [1]namespaces/[2]default/[3]pods/
 =====================================
@@ -350,13 +344,11 @@ Action buttons change based on selected item type and state.
 [V]iew  [L]ogs  [E]xec  [D]elete  [R]estart  [B]ack  [Q]uit
 
 > v1
-```
 
 ---
 
 ### Domain 6: API Documentation
 
-```
 =====================================
 [1]API/[2]v2/[3]users/
 =====================================
@@ -370,13 +362,11 @@ Action buttons change based on selected item type and state.
 [V]iew  [T]est  [C]opy  [E]xport  [B]ack  [Q]uit
 
 > v1
-```
 
 ---
 
 ### Domain 7: System Monitoring (Cockpit)
 
-```
 =====================================
 [1]System/[2]Services/
 =====================================
@@ -389,13 +379,11 @@ Action buttons change based on selected item type and state.
 [V]iew  [S]tart  [S]top  [R]estart  [L]ogs  [B]ack  [Q]uit
 
 > v1
-```
 
 ---
 
 ### Domain 8: Operating System Settings
 
-```
 =====================================
 [1]System/[2]Network/[3]Wi-Fi/
 =====================================
@@ -408,13 +396,11 @@ Action buttons change based on selected item type and state.
 [V]iew  [C]onnect  [F]orget  [P]roperties  [B]ack  [Q]uit
 
 > v1
-```
 
 ---
 
 ### Domain 9: Source Code Repository (Git)
 
-```
 =====================================
 [1]repository/[2]src/[3]main.py
 =====================================
@@ -426,13 +412,11 @@ Action buttons change based on selected item type and state.
 [V]iew  [E]dit  [C]ommit  [P]ush  [P]ull  [B]ranch  [B]ack  [Q]uit
 
 > v1
-```
 
 ---
 
 ### Domain 10: IoT Device Management
 
-```
 =====================================
 [1]factory/[2]floor2/[3]sensor_012/
 =====================================
@@ -445,7 +429,6 @@ Action buttons change based on selected item type and state.
 [V]iew  [C]alibrate  [R]eboot  [U]pdate  [D]isable  [B]ack  [Q]uit
 
 > v1
-```
 
 ---
 
@@ -453,7 +436,6 @@ Action buttons change based on selected item type and state.
 
 ### Search Results (Network Domain)
 
-```
 deleted: (2 matches)
 
 [1] interface vlan10                                                [switch]
@@ -462,11 +444,9 @@ deleted: (2 matches)
 [S]earch  [V]iew  [R]estore  [B]ack  [Q]uit
 
 > v1
-```
 
 ### Search Results (Filesystem Domain)
 
-```
 deleted: (1 matches)
 
 [1] old_config.txt                                                  [backup]
@@ -474,11 +454,9 @@ deleted: (1 matches)
 [S]earch  [V]iew  [R]estore  [B]ack  [Q]uit
 
 > v1
-```
 
 ### Search Results (Database Domain)
 
-```
 updated: (1 matches)
 
 [1] users (+234/-120)                                               [public]
@@ -486,11 +464,9 @@ updated: (1 matches)
 [S]earch  [V]iew  [B]ack  [Q]uit
 
 > v1
-```
 
 ### Search Results (Cloud Domain)
 
-```
 deleted: (1 matches)
 
 [1] i-5678efgh                                                      [terminated]
@@ -498,7 +474,6 @@ deleted: (1 matches)
 [S]earch  [V]iew  [R]estore  [B]ack  [Q]uit
 
 > v1
-```
 
 ---
 
