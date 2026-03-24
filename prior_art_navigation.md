@@ -47,7 +47,6 @@ This system externalizes that cognitive pattern:
 
 Every displayed item has a number. The numbers reset per screen. Numbers are independent of absolute depth.
 
-```
 [1] projects
   [1] web
     [1] index.html
@@ -57,7 +56,6 @@ Every displayed item has a number. The numbers reset per screen. Numbers are ind
   [3] desktop
 [2] personal
 [3] archives
-```
 
 **Numbering rules:**
 - Numbers start at 1 for each screen
@@ -78,15 +76,11 @@ Every displayed item has a number. The numbers reset per screen. Numbers are ind
 
 The path header shows current position with relative numbering:
 
-```
 [1]home/[2]user/[3]projects/[4]web/[5]src/
-```
 
 When path exceeds terminal width, smart truncation applies:
 
-```
 [1].../[2]web/[3]src/
-```
 
 **Truncation rules:**
 - Left side truncated first (older ancestors)
@@ -106,9 +100,7 @@ When path exceeds terminal width, smart truncation applies:
 
 Each segment in the path header has a number:
 
-```
 [1]home/[2]user/[3]projects/[4]web/[5]src/
-```
 
 **Commands:**
 - `j2` → jump to "user" (second segment)
@@ -175,14 +167,12 @@ All navigation uses only numbers and single keys. No path memorization.
 
 When items exceed screen height, pagination applies:
 
-```
 [1] Item 1
 [2] Item 2
 ...
 [14] Item 14
 
 <<                            Page 2 of 5                            >>
-```
 
 **Pagination rules:**
 - Items per page = terminal height - fixed UI elements
@@ -225,7 +215,6 @@ try:
 except:
     width = 80
     height = 24
-```
 
 All elements adapt:
 - Items per page = height - fixed_lines
@@ -241,7 +230,6 @@ All elements adapt:
 
 Search results show all items regardless of state (current, deleted, renamed):
 
-```
 Search: 'config' (3 matches)
 
 [1] deleted: config.txt                                          [network]
@@ -249,7 +237,7 @@ Search: 'config' (3 matches)
 [3] created: vlan10                                              [switch]
 
 [S]earch  [V]iew  [R]estore  [B]ack  [Q]uit
-```
+
 
 **Search syntax (order independent):**
 - `created*`, `deleted*`, `updated*`, `renamed*`, `restored*`, `erased*`
