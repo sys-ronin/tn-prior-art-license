@@ -177,5 +177,3 @@ THE LICENSE IS ETERNAL.
 ---
 
 **sys_ronin**
-
----
