@@ -2,21 +2,13 @@
 
 ## 1. Introduction
 
-This comparison evaluates Terminal Notes against twelve widely used note‑taking and knowledge management applications as of March 2026. The analysis focuses on features that are fundamental to a writing environment: permanence, versioning, encryption, portability, cognitive alignment, and user control over data.
+This comparison evaluates Terminal Notes against twelve widely used note‑taking and knowledge management applications as of March 2026. The analysis focuses on features that are fundamental to a writing environment: permanence, versioning, encryption, portability, deployment flexibility, and cognitive alignment.
 
 The data for other applications is drawn from official documentation, release notes, and authoritative third‑party sources. Terminal Notes is described as implemented in the source code of this repository.
 
 ---
 
-## 2. Executive Summary
-
-Terminal Notes occupies a distinct position in the note‑taking landscape. Its combination of features—UUID permanence, resurrection, per‑item timeline, hierarchical activity view, hardware‑bound encryption, portable folder, data‑as‑UI, and order‑free search with action/type/time filters—is not found in any other application surveyed.
-
-The surveyed applications excel in areas such as mobile experience, collaboration, AI assistance, and task management. However, none provide the foundational capabilities that Terminal Notes offers: permanent item identity, indefinite recovery from deletion, complete version history at the item level, and a user interface that disappears.
-
----
-
-## 3. Feature Comparison Matrix
+## 2. Feature Comparison Matrix
 
 | Feature | Terminal Notes | Notion | Apple Notes | Evernote | Google Keep | OneNote | Obsidian | Standard Notes | Joplin | Notesnook | SimpleNote | AppFlowy | SiYuan |
 |---------|----------------|--------|-------------|----------|-------------|---------|----------|----------------|--------|-----------|-----------|----------|--------|
@@ -30,109 +22,115 @@ The surveyed applications excel in areas such as mobile experience, collaboratio
 | Git as primary storage | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | Change statistics per edit | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | **Encryption & Security** |
-| End‑to‑end encryption | ✓ | ✗ | ✗ (on‑device) | ✓ (in‑transit) | ✗ | ✗ (in‑transit) | ✗ | ✓ | ✓ (optional) | ✓ | ✗ | ✗ | ✗ |
+| End‑to‑end encryption | ✓ | ✗  | ✗ (on‑device) | ✗ (in‑transit)  | ✗ | ✗ (in‑transit) | ✗ | ✓  | ✓ (optional) | ✓  | ✗ | ✗ | ✗ |
 | Hardware‑bound keys | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | Lock button flushes memory | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | Permanent erasure with audit | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
-| **Portability** |
+| **Portability & Deployment** |
 | Single‑folder portable | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
-| No installation required | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
+| No installation required | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓  | ✗ | ✗ |
 | Runs from USB / external drive | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | Docker / container support | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | ✓ |
-| Self‑hosting | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ |
+| Self‑hosting | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | ✓  | ✓ | ✓ | ✗ | ✓ | ✓ |
+| Notebook import from any location | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
+| Notebook creation in any location | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | **Sync & Backup** |
-| Free encrypted sync | ✓ (via Git remote) | ✗ | ✗ | ✗ | ✗ | ✗ | Limited | ✓ | ✓ (self‑hosted) | ✓ | ✓ | ✗ | ✗ |
+| Free encrypted sync | ✓ (via Git remote) | ✗ | ✗ | ✗ | ✗ | ✗ | Limited | ✓  | ✓ (self‑hosted) | ✓ | ✓  | ✗ | ✗ |
 | Per‑notebook backup | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
+| Local backups | ✓ (atomic) | ✗ | ✗ | ✗ | ✗ | ✓ (iOS Mar 2026)  | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | **Interface & Experience** |
 | Terminal UI | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | Data as UI (numbers as commands) | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | Fish‑eye path navigation | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | Jump navigation (j1, j2, jb) | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
-| External editor | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
+| Adaptive toolbar / UI | ✗ | ✗ | ✓ (iOS 26)  | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
+| Distraction‑free mode | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | ✓  | ✗ | ✗ | ✓  | ✗ | ✗ |
 | **Search** |
 | Action filters (created*, deleted*) | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | Type filters (note*, file*, sub*) | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | Time filters (today*, yesterday*, thisweek*) | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | Date range (date* DD‑MM‑YYYY) | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
-| Scope filters (in*, g*) | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
-| Order‑free query language | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
-| Semantic / natural language search | ✗ | ✓ | ✓ (iOS 26) | ✓ (v11) | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
+| Semantic / natural language search | ✗ | ✓  | ✓ (iOS 26)  | ✓ (v11)  | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | **Hierarchy** |
-| Infinite subnotebook depth | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | ✗ | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ |
+| Infinite subnotebook depth | ✓ | ✓  | ✓ | ✓  | ✗ | ✓ | ✗ | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ |
 | Recursive activity view | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | Path display with truncation | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | **Data Integrity** |
 | Atomic writes | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
-| Crash recovery | ✓ | ✗ | ✗ | ✗ | ✗ | ✓ (iOS 2026) | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
+| Crash recovery | ✓ | ✗ | ✗ | ✗ | ✗ | ✓ (iOS 2026)  | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | Autosave | ✓ (every 30s) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| **Writing Focus** |
-| Minimum cognitive load | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | ✗ | ✗ | ✗ | ✓ | ✗ | ✗ |
-| Distraction‑free mode | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | ✗ | ✗ | ✗ | ✓ | ✗ | ✗ |
-| Interface disappears | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | **Other** |
-| Mobile app | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Web clipper | ✗ | ✓ | ✗ | ✓ | ✗ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
-| AI features | ✗ | ✓ | ✓ | ✓ | ✗ | ✗ | ✓ (plugin) | ✗ | ✗ | ✗ | ✗ | ✓ | ✗ |
-| Task management | ✗ | ✓ | ✓ | ✓ | ✓ (Tasks) | ✓ | ✗ | ✗ | ✓ | ✓ | ✗ | ✓ | ✗ |
+| Mobile app | ✗ | ✓  | ✓  | ✓  | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Web clipper | ✗ | ✗ | ✗ | ✓ | ✗ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
+| AI features | ✗ | ✓ (Custom Agents)  | ✓ (AI Search)  | ✓ (AI Assistant, Semantic Search)  | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
+| Task management | ✗ | ✓  | ✓ | ✓  | ✓ (Tasks migration)  | ✓ | ✗ | ✗ | ✓ | ✓ | ✗ | ✓ | ✗ |
 | Prior art disclosures | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
+
+---
+
+## 3. Deployment Flexibility: A Distinctive Capability
+
+Terminal Notes offers unique deployment flexibility that no other surveyed application provides:
+
+| Deployment Method | Terminal Notes | Others |
+|-------------------|----------------|--------|
+| **Run from USB drive** | ✓ (single folder, no installation) | ✗ (require installation) |
+| **Run from any filesystem location** | ✓ (any path, any drive) | ✗ (installation‑dependent) |
+| **Docker container** | ✓ | AppFlowy, SiYuan only  |
+| **Raspberry Pi / ARM** | ✓ (Python everywhere) | Limited |
+| **Free Oracle Cloud VM** | ✓ (copy folder, run) | ✗ (requires installation) |
+| **Network share / NAS** | ✓ (copy folder, run) | ✗ |
+| **Multiple copies on same machine** | ✓ (isolated folders) | ✗ (single installation) |
+
+**Notebook import from any location**: Terminal Notes can import notebooks from any filesystem path, including USB drives, network shares, cloud‑synced folders, and external drives. The registry tracks the absolute path, so notebooks can live anywhere .
+
+**Notebook creation in any location**: When creating a new notebook, the user can choose any directory. The notebook is created as a self‑contained folder that can be moved, copied, or synced independently.
+
+No other application in this comparison offers this level of deployment flexibility. Joplin supports self‑hosting but requires installation and database setup. Obsidian can work with files in a cloud folder but still requires installation. AppFlowy and SiYuan support Docker, but not the single‑folder portability that Terminal Notes provides.
 
 ---
 
 ## 4. Detailed Analysis
 
-### 4.1 Writing with Minimum Cognitive Load
-
-**Terminal Notes** achieves minimal cognitive load through:
-- **Data as UI**: Numbers on data, commands on numbers. No menu hierarchy to navigate.
-- **Recognition over recall**: All available commands are visible in the footer at all times.
-- **Fish‑eye path display**: Paths truncate to 4‑7 segments, respecting Miller’s Law (1956) of working memory capacity.
-- **Jump navigation**: `j1`, `j2`, `jb` allow spatial navigation by position, not by recalling absolute paths.
-- **No modal dialogs**: The system does not interrupt writing with confirmation prompts unless explicitly required for destructive actions.
-
-**Other applications**:
-- **Obsidian** offers distraction‑free mode and is cited as supporting networked thinking aligned with memory research . Its graph view and backlinking encourage elaborative encoding, which supports long‑term retention. However, it requires Markdown familiarity and plugin configuration.
-- **SimpleNote** is noted for its minimalist, zero‑distraction interface . It excels at rapid capture but lacks formatting, attachments, and hierarchy.
-- **MindMup** is described as having a “frictionless interface” that allows focusing on thoughts without getting in the way .
-
-**None** of the surveyed applications combine spatial navigation, fish‑eye path display, jump navigation, and visible commands into a single integrated interface.
-
-### 4.2 Permanence and Resurrection
+### 4.1 Data Permanence and Resurrection
 
 **Terminal Notes** uses UUID permanence: every item receives a permanent identifier at creation that never changes, surviving renames, moves, deletions, and restorations. Deleted items are never removed from Git history. They remain searchable, viewable, and restorable indefinitely.
 
-**All other applications** surveyed use temporary trash bins with retention periods (typically 30 days) or offer no recovery. Evernote’s free plan limits notes to 50 and trash to 30 days . Standard Notes has no resurrection; deleted notes are not recoverable . Joplin and Notesnook do not offer restoration from history beyond basic trash.
+**All other applications** surveyed use temporary trash bins with retention periods (typically 30 days) or offer no recovery. Evernote's free plan limits notes to 50 and trash to 30 days . Standard Notes has no resurrection; deleted notes are not recoverable . Joplin and Notesnook do not offer restoration from history beyond basic trash. Google Keep reminders are migrating to Google Tasks, but deleted notes are not recoverable .
 
-### 4.3 Versioning and History
+### 4.2 Versioning and History
 
 **Terminal Notes** provides per‑item timeline showing every commit affecting a note, with change statistics (+X/-Y) for each edit. Activity view shows changes across an entire notebook and all its descendants.
 
-**None of the surveyed applications** offer item‑level timeline with change statistics. Notion and Obsidian have revision history, but it is not per‑item with granular change statistics. Obsidian’s file‑level versioning relies on external Git plugins and does not integrate change statistics into the interface .
+**None of the surveyed applications** offer item‑level timeline with change statistics. Notion has revision history but not per‑item with granular change statistics . Obsidian's file‑level versioning relies on external Git plugins and does not integrate change statistics into the interface. Joplin 3.6.3 added a delete revisions API, but this is for API use, not a user‑facing timeline with change statistics .
 
-### 4.4 Encryption and Security
+### 4.3 Encryption and Security
 
-**Terminal Notes** implements AES‑256‑GCM with keys derived from password and folder name. Keys are stored encrypted with the machine’s hardware fingerprint. The lock button clears the key from memory and unloads the notebook structure. Permanent erasure uses git‑filter‑repo, leaving a tombstone commit.
+**Terminal Notes** implements AES‑256‑GCM with keys derived from password and folder name. Keys are stored encrypted with the machine's hardware fingerprint. The lock button clears the key from memory and unloads the notebook structure. Permanent erasure uses git‑filter‑repo, leaving a tombstone commit.
 
 **Other applications**:
-- **Standard Notes** offers end‑to‑end encryption at the protocol level. Keys are client‑side; even Standard Notes servers cannot read content .
+- **Standard Notes** offers end‑to‑end encryption, but keys are not hardware‑bound .
 - **Joplin** supports end‑to‑end encryption, but keys are not hardware‑bound .
 - **Notesnook** features end‑to‑end encryption with AES‑256 .
 - **Notion** encrypts data in transit and at rest, but does not implement client‑side E2EE — Notion engineers could theoretically access plaintext .
+- **Evernote v11** has AI features but no E2EE; encryption is in‑transit only .
 
 None of these applications offer hardware‑bound keys, memory‑flush lock buttons, or permanent erasure with tombstone audit trails.
 
-### 4.5 Portability and Deployment
+### 4.4 Portability and Deployment
 
-**Terminal Notes** runs from a single folder. Copy it, move it, sync it. No installation. No dependencies beyond Python and Git (crypto bundled). Runs on any platform with Python, including Docker, Raspberry Pi, and free cloud VMs.
+**Terminal Notes** runs from a single folder. Copy it, move it, sync it. No installation. No dependencies beyond Python and Git (crypto bundled). Runs on any platform with Python, including Docker, Raspberry Pi, free cloud VMs, and USB drives. Notebooks can be imported from or created in any accessible filesystem location.
 
 **Other applications**:
+- **Simplenote** is free and cross‑platform, but requires installation .
 - **Joplin** offers self‑hosting via Nextcloud, WebDAV, Dropbox, or FTP .
-- **AppFlowy** and **SiYuan** support self‑hosting .
-- **Obsidian** supports third‑party sync (iCloud, Dropbox, Syncthing) but requires installation .
-- **Standard Notes** offers sync across unlimited devices on free plan but does not support self‑hosting for sync .
+- **AppFlowy** and **SiYuan** support Docker self‑hosting .
+- **Obsidian** supports third‑party sync but requires installation .
+- **Standard Notes** offers sync across unlimited devices but does not support self‑hosting for sync .
 
-**None** of the surveyed applications offer single‑folder portability with bundled dependencies and no installation requirement.
+**None** of the surveyed applications offer single‑folder portability with bundled dependencies, no installation requirement, and the ability to import or create notebooks in any user‑chosen location.
 
-### 4.6 Search Capabilities
+### 4.5 Search Capabilities
 
 **Terminal Notes** supports:
 - Action wildcards: `created*`, `deleted*`, `updated*`, `renamed*`, `restored*`, `erased*`
@@ -143,20 +141,27 @@ None of these applications offer hardware‑bound keys, memory‑flush lock butt
 - Order‑free query composition
 
 **Other applications**:
-- **Notion** offers natural language AI search .
+- **Notion** offers natural language AI search via Custom Agents .
 - **Apple Notes** added AI‑powered natural language search in iOS 26 .
-- **Evernote v11** introduced semantic search .
-- **Obsidian** offers text search with Dataview plugin; no native action/type/time filters .
+- **Evernote v11** introduced semantic search that understands meaning, not just keywords .
 
 None offer action‑based, type‑based, or time‑based filters combined with order‑free syntax.
 
-### 4.7 Data Integrity
+### 4.6 User Interface and Cognitive Load
 
-**Terminal Notes** uses atomic writes (temporary file, fsync, rename) for every JSON file, preventing corruption. Crash recovery saves every 30 seconds and restores on next open.
+**Terminal Notes** achieves minimal cognitive load through:
+- **Data as UI**: Numbers on data, commands on numbers. No menu hierarchy.
+- **Recognition over recall**: All available commands visible in footer.
+- **Fish‑eye path display**: Paths truncate to 4‑7 segments, respecting Miller's Law of working memory capacity.
+- **Jump navigation**: `j1`, `j2`, `jb` allow spatial navigation by position.
+- **No modal dialogs**: System does not interrupt writing.
 
 **Other applications**:
-- **OneNote** added automatic local backups for iOS in March 2026 .
-- **Notion**, **Evernote**, **Apple Notes**, **Obsidian**, **Standard Notes**, **Joplin**, **Notesnook**, and **SimpleNote** do not document atomic write guarantees or systematic crash recovery.
+- **Apple Notes** introduced an Adaptive Toolbar in iOS 26 that shows relevant tools based on context .
+- **Obsidian** offers distraction‑free mode and supports networked thinking .
+- **Simplenote** is described as a simple, distraction‑free experience .
+
+None combine spatial navigation, fish‑eye path display, jump navigation, and visible commands into a single integrated interface.
 
 ---
 
@@ -172,18 +177,20 @@ Terminal Notes possesses the following capabilities that are not present in any 
 6. **Hardware‑bound encryption** – keys tied to machine fingerprint, cannot be copied.
 7. **Lock button as memory flush** – explicit key clearing and structure unloading.
 8. **Data as UI** – numbers on data; commands on numbers; no interface layer.
-9. **Portable folder** – single folder, no installation, no dependencies. Runs from USB, Docker, any platform with Python.
-10. **Search with action, type, time filters** – order‑free query language.
-11. **Atomic writes** – guarantee of no file corruption.
-12. **Recursive subnotebooks with path truncation** – infinite depth with cognitive‑aware display.
-13. **Prior art disclosures** – concepts published to prevent patenting.
+9. **Portable folder** – single folder, no installation, no dependencies. Runs from USB, Docker, any location.
+10. **Notebook import from any location** – import notebooks from any accessible filesystem path.
+11. **Notebook creation in any location** – create notebooks in any user‑chosen directory.
+12. **Search with action, type, time filters** – order‑free query language.
+13. **Atomic writes** – guarantee of no file corruption.
+14. **Recursive subnotebooks with path truncation** – infinite depth with cognitive‑aware display.
+15. **Prior art disclosures** – concepts published to prevent patenting.
 
 ---
 
 ## 6. Conclusion
 
-Terminal Notes occupies a distinct position in the note‑taking and knowledge management landscape. Its combination of features—UUID permanence, resurrection, per‑item timeline, hierarchical activity, hardware‑bound encryption, portable folder, data‑as‑UI, and advanced search—is not found in any other application surveyed.
+Terminal Notes occupies a distinct position in the note‑taking and knowledge management landscape. Its combination of features—UUID permanence, resurrection, per‑item timeline, hierarchical activity, hardware‑bound encryption, portable folder deployment, notebook import/creation from any location, data‑as‑UI, and advanced search—is not found in any other application surveyed.
 
-The surveyed applications, including Notion, Apple Notes, Evernote, Google Keep, OneNote, Obsidian, Standard Notes, Joplin, Notesnook, SimpleNote, AppFlowy, and SiYuan, excel in areas such as mobile experience, collaboration, AI assistance, and task management. However, none provide the foundational capabilities that Terminal Notes offers: permanent identity, indefinite recovery, complete version history at the item level, and a user interface that disappears.
+The surveyed applications, including Notion, Apple Notes, Evernote, Google Keep, OneNote, Obsidian, Standard Notes, Joplin, Notesnook, SimpleNote, AppFlowy, and SiYuan, excel in areas such as mobile experience, collaboration, AI assistance, and task management. However, none provide the foundational capabilities that Terminal Notes offers: permanent identity, indefinite recovery, complete version history at the item level, hardware‑bound security, deployment flexibility, and a user interface that disappears.
 
-The architectural choices embodied in Terminal Notes reflect a design philosophy oriented toward writing as an act rather than document management. The features are not isolated; they form an integrated system where each capability depends on the others. This integration is what distinguishes the application from all others in the comparison.
+The architectural choices embodied in Terminal Notes reflect a design philosophy oriented toward writing as an act rather than document management. The features are not isolated; they form an integrated system where each capability depends on the others. This integration, combined with the unique ability to deploy the application from any location and manage notebooks anywhere on the filesystem, distinguishes it from all others in the comparison.
