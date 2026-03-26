@@ -56,7 +56,7 @@ Copy the code. Email it to colleagues. Teach it in classrooms. Credit the source
 **Patent any concept disclosed herein.**  
 Not UUID permanence. Not the three‑file atomic architecture. Not transparent encryption with folder‑name key binding. Not permanent session storage with system fingerprint. Not the resurrection engine. Not the timeline engine. Not the custom query parser with intent‑based display. Not git‑filter‑repo as embedded module with custom UUID/notebook filters. Not the fish‑eye navigation algorithm. Not any combination thereof.
 
-Prior art exists. It is dated. It is public. It is irrevocable.
+These concepts are described in public, timestamped documents as of March 2026. They constitute prior art under 35 U.S.C. § 102(a)(1). No party may obtain valid patent claims covering any concept disclosed herein.
 
 **Assert intellectual property rights over these ideas.**  
 Do not claim you invented what was already public. Do not seek exclusive rights to shared knowledge. Do not lock down what was given freely.
@@ -113,11 +113,9 @@ If you do not agree with this position, you may still use the software. The soft
 
 ## Prior Art Establishment
 
-The concepts described in this repository—including but not limited to UUID permanence, three‑file atomic architecture, hardware‑bound encryption with folder‑name key binding, resurrection engine, timeline engine, custom query parser with intent‑based display, fish‑eye navigation algorithm, data‑as‑UI interface paradigm, and any combination thereof—are disclosed in public, timestamped documents as of March 2026. These disclosures constitute prior art under 35 U.S.C. § 102(a)(1). No party may obtain valid patent claims covering any concept disclosed herein.
+The concepts described in this repository—including but not limited to UUID permanence, three‑file atomic architecture, hardware‑bound encryption with folder‑name key binding, permanent session storage with system fingerprint, resurrection engine, timeline engine, custom query parser with intent‑based display, fish‑eye navigation algorithm, data‑as‑UI interface paradigm, and any combination thereof—are disclosed in public, timestamped documents as of March 2026.
 
-Date of publication: March 2026. All content is timestamped, public, and irrevocable.
-
-No party may obtain valid patent claims covering any concept disclosed herein. Any such claims, if filed after this date, are anticipated and invalid. This is not a legal threat. This is a factual statement.
+These disclosures constitute prior art under 35 U.S.C. § 102(a)(1). No party may obtain valid patent claims covering any concept disclosed herein.
 
 ---
 
