@@ -113,7 +113,7 @@ If you do not agree with this position, you may still use the software. The soft
 
 ## Prior Art Establishment
 
-This repository, including all code, documentation, commit history, custom git‑filter‑repo extensions, encryption architecture, and the complete logic chain documented in the repository, constitutes prior art under 35 U.S.C. § 102(a)(1).
+The concepts described in this repository—including but not limited to UUID permanence, three‑file atomic architecture, hardware‑bound encryption with folder‑name key binding, resurrection engine, timeline engine, custom query parser with intent‑based display, fish‑eye navigation algorithm, data‑as‑UI interface paradigm, and any combination thereof—are disclosed in public, timestamped documents as of March 2026. These disclosures constitute prior art under 35 U.S.C. § 102(a)(1). No party may obtain valid patent claims covering any concept disclosed herein.
 
 Date of publication: March 2026. All content is timestamped, public, and irrevocable.
 
